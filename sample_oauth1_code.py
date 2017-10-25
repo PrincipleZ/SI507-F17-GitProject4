@@ -1,5 +1,6 @@
 # A comment made by Yuanze Zhang
 # OAuth1 Code to access data from the Twitter API...
+# This is an added comment.
 import requests_oauthlib
 import webbrowser
 import json
@@ -17,6 +18,25 @@ client_secret = ""  # What Twitter calls Consumer Secret
 if not client_secret or not client_key:
     print("You need to fill in client_key and client_secret. See comments in the code around line 8-14")
     exit()
+
+# This is for caching the data getting from the Tumblr API
+CACHE_FNAME = 'cache_file_name.json'
+try:
+    cache_file = open(CACHE_FNAME, 'r')
+    cache_contents = cache_file.read()
+    CACHE_DICTION = json.loads(cache_contents)
+    cache_file.close()
+except:
+    CACHE_DICTION = {}
+
+def params_unique_combination(baseurl, params_d, private_keys=["api_key"]):
+    alphabetized_keys = sorted(params_d.keys())
+    res = []
+    for k in alphabetized_keys:
+        if k not in private_keys:
+            res.append("{}-{}".format(k, params_d[k]))
+    return baseurl + "_".join(res)
+    
 
 
 def get_tokens():
